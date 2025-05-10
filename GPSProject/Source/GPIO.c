@@ -1,25 +1,33 @@
-#include "GPIO.h"
 #include "tm4c123gh6pm.h"
-#include "bit_utilies.h"
+#include "Bit_Utilies.h"
+//Port B is already intialized in UART1.c
+//This code is for LCD only, if also intialized in LCD.c, please remove it, and let this be
+void LCD_GPIO_Init(void) {
+    // Enable clocks for Ports A, B, D, and E
+    SYSCTL_RCGCGPIO_R |= (1<<0) | (1<<1) | (1<<3) | (1<<4); // A, B, D, E
+    while ((SYSCTL_PRGPIO_R & ((1<<0)|(1<<1)|(1<<3)|(1<<4))) != ((1<<0)|(1<<1)|(1<<3)|(1<<4))); // Wait for ready
 
-void GPIO_Init_PortE(void) {
-    SET_BIT(SYSCTL_RCGCGPIO_R, 4);           // Enable clock for Port E
-    while ((GET_BIT(SYSCTL_PRGPIO_R, 4)) == 0); // Wait until ready
+    // === PORT A === (PA5, PA6, PA7 → DB2–DB0)
+    GPIO_PORTA_DIR_R |= (1<<5)|(1<<6)|(1<<7);
+    GPIO_PORTA_DEN_R |= (1<<5)|(1<<6)|(1<<7);
+    GPIO_PORTA_AFSEL_R &= ~((1<<5)|(1<<6)|(1<<7));
+    GPIO_PORTA_AMSEL_R &= ~((1<<5)|(1<<6)|(1<<7));
 
-    GPIO_PORTE_AMSEL_R &= ~0x02;             // Disable analog on PE1
-    GPIO_PORTE_AFSEL_R |= 0x02;              // Enable alternate function on PE1
-    GPIO_PORTE_PCTL_R &= ~0x000000F0;        // Clear PCTL for PE1
-    GPIO_PORTE_PCTL_R |= 0x00000010;         // Set PE1 as U1RX
-    GPIO_PORTE_DEN_R |= 0x02;                // Digital enable PE1
-    GPIO_PORTE_DIR_R &= ~0x02;               // Set PE1 as input (U1RX)
+    // === PORT B === (PB4 → DB3)
+    GPIO_PORTB_DIR_R |= (1<<4);
+    GPIO_PORTB_DEN_R |= (1<<4);
+    GPIO_PORTB_AFSEL_R &= ~(1<<4);
+    GPIO_PORTB_AMSEL_R &= ~(1<<4);
+
+    // === PORT D === (PD0, PD1, PD2 → RS, RW, E | PD3 → DB7)
+    GPIO_PORTD_DIR_R |= (1<<0)|(1<<1)|(1<<2)|(1<<3);
+    GPIO_PORTD_DEN_R |= (1<<0)|(1<<1)|(1<<2)|(1<<3);
+    GPIO_PORTD_AFSEL_R &= ~((1<<0)|(1<<1)|(1<<2)|(1<<3));
+    GPIO_PORTD_AMSEL_R &= ~((1<<0)|(1<<1)|(1<<2)|(1<<3));
+
+    // === PORT E === (PE1, PE4, PE5 → DB6, DB5, DB4)
+    GPIO_PORTE_DIR_R |= (1<<1)|(1<<4)|(1<<5);
+    GPIO_PORTE_DEN_R |= (1<<1)|(1<<4)|(1<<5);
+    GPIO_PORTE_AFSEL_R &= ~((1<<1)|(1<<4)|(1<<5));
+    GPIO_PORTE_AMSEL_R &= ~((1<<1)|(1<<4)|(1<<5));
 }
-
-void GPIO_Init_PortB(void) {
-    SET_BIT(SYSCTL_RCGCGPIO_R, 1);          // Enable clock for Port B
-    while ((GET_BIT(SYSCTL_PRGPIO_R, 1)) == 0); // Wait until ready
-
-    GPIO_PORTB_AMSEL_R = 0x00;              // Disable analog
-    GPIO_PORTB_DIR_R = 0xFF;                // Set all PB pins as output (if using 4-bit LCD)
-    GPIO_PORTB_DEN_R = 0xFF;                // Digital enable all PB pins
-}
-
