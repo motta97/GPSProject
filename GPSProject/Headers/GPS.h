@@ -14,12 +14,12 @@ typedef enum {
   GPSvalidData = 2
 } GPS_Status_t;
 
-//static GPS_status_t GPSStdStatusReadMEASentence(UART_Config_t *CopyPtrUARTConfig, u8 *Copyarru8Buffer);
+
 // GPS reading and formatting
 void GPSread(void);
 void GPSformat(void);
 
-// Conversion utilities
+// Conversion 
 float ToDegree(float angle);
 float ToRad(float angle);
 
