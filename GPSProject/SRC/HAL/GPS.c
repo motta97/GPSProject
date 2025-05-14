@@ -17,8 +17,8 @@ double LongSaved;
 
 
 float currentLong, currentLat, speed;
-const float long_final = 0.0;  // replace with actual destination longitude
-const float lat_final = 0.0;   // replace with actual destination latitude
+const float long_final = 0.0;  
+const float lat_final = 0.0;   
 
 char A;
 char N_S;
