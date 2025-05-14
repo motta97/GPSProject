@@ -9,15 +9,15 @@
 
 // Define status values
 typedef enum {
-  GPS_no_data = 0,
-  GPS_invalid_data = 1,
-  GPS_valid_data = 2
+  GPSnoData = 0,
+  GPSinvalidData = 1,
+  GPSvalidData = 2
 } GPS_Status_t;
 
 //static GPS_status_t GPSStdStatusReadMEASentence(UART_Config_t *CopyPtrUARTConfig, u8 *Copyarru8Buffer);
 // GPS reading and formatting
-void GPS_read(void);
-void GPS_format(void);
+void GPSread(void);
+void GPSformat(void);
 
 // Conversion utilities
 float ToDegree(float angle);
