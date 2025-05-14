@@ -17,20 +17,17 @@ char* names[5] = {
     };
 
 
-
-// ????????? ????????? ?? ????? ????
 extern char GPS_FORMATARR[15][20];
 extern char GPS1[80];
 extern char GPS_logname[];
 
 extern float currentLat, currentLong;
 
-// ???? GPS
 void GPS_READ(void);
 void GPS_FORMAT(void);
 float ToDegree(float angle);
 float GPS_getDistance(float currentLong, float currentLat, float destLong, float destLat);
-//////////
+
 void UpdateLEDsBySpeedAndDistance(float speed, float distance) {
     // Clear all LEDs first
     GPIO_PORTF_DATA_R &= ~0x0E;  // Clear PF1 (Red), PF2 (Blue), PF3 (Green)
@@ -38,13 +35,6 @@ void UpdateLEDsBySpeedAndDistance(float speed, float distance) {
 
 GPIO_PORTF_DATA_R &= ~0x0E;  // Clear all LEDs
 
-/*if (distance < 25) {
-    GPIO_PORTF_DATA_R |= 0x08;  // Green (PF3)
-} else if (distance < 50) {
-    GPIO_PORTF_DATA_R |= 0x0A;  // Yellow = Red + Green (PF1 + PF3)
-}  else {
-    GPIO_PORTF_DATA_R |= 0x02;  // Red (PF1)
-} */
 
 if (distance < 25) {
     GPIO_SetLedValue(GPIO_GREEN_LED, GPIO_LED_ON);  // Green (PF3)
@@ -57,12 +47,6 @@ if (distance < 25) {
 
 }
 
-// ???? ?????? float ??? UART
-/*void UART_TX_Float(float number) { // 
-    char buffer[20];
-    sprintf(buffer, "%.6f", number);  // 6 ????? ?????
-    UART1_OutString(buffer);
-} */
 
 void delayMs(int n) {
     volatile int i, j;
@@ -81,11 +65,11 @@ int main(void) {
     float calculatedDistance;
     int min_index;
     
-    UART0_init();     // UART0 for Tera Term
+    UART0_init();    
     UART1_Init();     // UART1 for GPS
     UART0_OutString("Starting GPS location test...\n");
 
-    LCD_Init();  // Initialize the LCD to display the closest location
+    LCD_Init();  // Initialize the LCD
 
     while (1) {
         GPS_READ();         // Get a GPRMC sentence
