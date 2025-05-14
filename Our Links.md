@@ -3,6 +3,8 @@ Video link:   https://youtu.be/PkJ-l7r4MOc?si=knBLwEKxsFeGWuRz
 
 
 
+
+
 Appendices 
 
 TivaC Driver : https://www.ti.com/tool/STELLARIS_ICDI_DRIVERS 
